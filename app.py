@@ -144,7 +144,6 @@ def feedback():
     data = request.json
     index = data.get('index')
     feedback_type = data.get('type')
-    # Here you can handle the feedback, e.g., store it in a database or log it
     print(f"Received {feedback_type} feedback for suggestion {index}")
     return jsonify({'message': 'Thank you for your feedback!'})
 
