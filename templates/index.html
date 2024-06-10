@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ethiopian Model Hub </title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .intro-text {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .intro-text h1 {
+            color: #16408e;
+        }
+        .intro-text p {
+            color: #555;
+        }
+        .section {
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #fafafa;
+            margin-bottom: 20px;
+        }
+        .section h2 {
+            font-size: 1.5em;
+            color: #007BFF;
+        }
+        .section input[type="text"], .section input[type="file"] {
+            width: calc(100% - 22px);
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .section button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1em;
+        }
+        .section button:hover {
+            background-color: #0056b3;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+        li {
+            background: #e0e0e0;
+            margin: 5px 0;
+            padding: 10px;
+            border-radius: 4px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .feedback {
+            cursor: pointer;
+            color: green;
+            font-size: 1.2em;
+        }
+        .model-link {
+            margin-top: 10px;
+            display: block;
+            color: #007BFF;
+            text-decoration: none;
+        }
+        .model-link:hover {
+            text-decoration: underline;
+        }
+        .spinner-border {
+            width: 2rem;
+            height: 2rem;
+        }
+        footer {
+            text-align: center;
+            padding: 20px;
+            background-color: #16408e;
+            color: white;
+            margin-top: 40px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="intro-text">
+            <h1>Welcome to the Ethiopian AI Models Hub</h1>
+            <p>Discover fun tools for Amharic text generation, translation, and more. Explore the interactive sections below to dive into different open-source models!</p>
+            <p>Crafted with a sprinkle of creativity and a lot of love by <a href="https://henokb.github.io/" style="color: #16408e;">Henok</a>.</p>
+        </div>
+
+        <div class="section">
+            <h2>Creative Writing Suggestions/Masking</h2>
+            <input type="text" id="prompt" placeholder="Enter a sentence">
+            <button onclick="getSuggestions()">Get Suggestions</button>
+            <ul id="suggestions"></ul>
+            <p>By EthioNLP <a id="llm-link" class="model-link" href="#" target="_blank">Model Source 🤗</a></p>
+        </div>
+
+        <div class="section">
+            <h2>Upload Audio for Transcription</h2>
+            <input type="file" id="audio-file">
+            <button onclick="uploadAudio()">Upload and Transcribe</button>
+            <ul id="transcriptions"></ul>
+            <p>By agkphysics <a id="asr-link" class="model-link" href="#" target="_blank">Model Source 🤗</a></p>
+        </div>
+
+        <div class="section">
+            <h2>Translate Amharic to English</h2>
+            <input type="text" id="amharic-text" placeholder="Enter Amharic text">
+            <button onclick="translateAmharicToEnglish()">Translate</button>
+            <ul id="amharic-to-english"></ul>
+            <input type="file" id="amharic-file" accept=".txt">
+            <button onclick="uploadAmharicFile()">Translate File</button>
+            <div id="amharic-progress" style="display: none;" class="text-center">
+                <div class="spinner-border" role="status">
+                    <span class="sr-only">Translating...</span>
+                </div>
+            </div>
+            <p>By Atnafu <a id="amharic-english-link" class="model-link" href="#" target="_blank">Model Source 🤗</a></p>
+        </div>
+
+        <div class="section">
+            <h2>Translate English to Amharic</h2>
+            <input type="text" id="english-text" placeholder="Enter English text">
+            <button onclick="translateEnglishToAmharic()">Translate</button>
+            <ul id="english-to-amharic"></ul>
+            <input type="file" id="english-file" accept=".txt">
+            <button onclick="uploadEnglishFile()">Translate File</button>
+            <div id="english-progress" style="display: none;" class="text-center">
+                <div class="spinner-border" role="status">
+                    <span class="sr-only">Translating...</span>
+                </div>
+            </div>
+            <p>By Atnafu <a id="english-amharic-link" class="model-link" href="#" target="_blank">Model Source 🤗</a></p>
+        </div>
+
+        <div class="section">
+            <h2>Text to Speech</h2>
+            <input type="text" id="tts-text" placeholder="Enter text for TTS">
+            <button onclick="convertTextToSpeech()">Convert to Speech</button>
+            <div id="tts-audio"></div>
+            <p>By Walelign <a id="tts-link" class="model-link" href="#" target="_blank">Model Source 🤗</a></p>
+        </div>
+    </div>
+
+    <footer>
+        © 2024 Henok's AI Hub. All rights reserved.
+    </footer>
+
+    <script>
+        const modelDetails = {
+            "llm": {
+                "url": "https://huggingface.co/EthioNLP/EthioLLM-l-250K",
+                "author": "EthioNLP"
+            },
+            "asr": {
+                "url": "https://huggingface.co/agkphysics/wav2vec2-large-xlsr-53-amharic",
+                "author": "agkphysics"
+            },
+            "amharicEnglish": {
+                "url": "https://huggingface.co/Atnafu/Amharic-English-MT",
+                "author": "Atnafu"
+            },
+            "englishAmharic": {
+                "url": "https://huggingface.co/Atnafu/English-Amharic-MT",
+                "author": "Atnafu"
+            },
+            "tts": {
+                "url": "https://huggingface.co/Walelign/speecht5_tts_Amharic",
+                "author": "Walelign"
+            }
+        };
+
+        document.getElementById('llm-link').href = modelDetails.llm.url;
+        document.getElementById('llm-link').textContent = `Model Source 🤗`;
+        document.querySelector('#llm-link').previousSibling.textContent = `By ${modelDetails.llm.author} `;
+
+        document.getElementById('asr-link').href = modelDetails.asr.url;
+        document.getElementById('asr-link').textContent = `Model Source 🤗`;
+        document.querySelector('#asr-link').previousSibling.textContent = `By ${modelDetails.asr.author} `;
+
+        document.getElementById('amharic-english-link').href = modelDetails.amharicEnglish.url;
+        document.getElementById('amharic-english-link').textContent = `Model Source 🤗`;
+        document.querySelector('#amharic-english-link').previousSibling.textContent = `By ${modelDetails.amharicEnglish.author} `;
+
+        document.getElementById('english-amharic-link').href = modelDetails.englishAmharic.url;
+        document.getElementById('english-amharic-link').textContent = `Model Source 🤗`;
+        document.querySelector('#english-amharic-link').previousSibling.textContent = `By ${modelDetails.englishAmharic.author} `;
+
+        document.getElementById('tts-link').href = modelDetails.tts.url;
+        document.getElementById('tts-link').textContent = `Model Source 🤗`;
+        document.querySelector('#tts-link').previousSibling.textContent = `By ${modelDetails.tts.author} `;
+
+        function getSuggestions() {
+            let prompt = document.getElementById('prompt').value;
+            if (!prompt.includes('<mask>')) {
+                prompt += ' <mask>';
+            }
+            fetch('/get_suggestions', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ prompt: prompt }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                const suggestionsList = document.getElementById('suggestions');
+                suggestionsList.innerHTML = '';
+                if (data.suggestions) {
+                    data.suggestions.forEach((suggestion, index) => {
+                        const li = document.createElement('li');
+                        li.textContent = suggestion;
+                        const feedback = document.createElement('span');
+                        feedback.textContent = '👍';
+                        feedback.classList.add('feedback');
+                        feedback.onclick = () => sendFeedback(index, 'positive');
+                        li.appendChild(feedback);
+                        suggestionsList.appendChild(li);
+                    });
+                } else {
+                    const li = document.createElement('li');
+                    li.textContent = data.error;
+                    suggestionsList.appendChild(li);
+                }
+            });
+        }
+
+        function sendFeedback(index, type) {
+            fetch('/feedback', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ index: index, type: type }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message);
+            });
+        }
+
+        function uploadAudio() {
+            const fileInput = document.getElementById('audio-file');
+            const file = fileInput.files[0];
+            if (!file) {
+                alert('Please select an audio file to upload.');
+                return;
+            }
+            const formData = new FormData();
+            formData.append('file', file);
+
+            fetch('/upload_audio', {
+                method: 'POST',
+                body: formData,
+            })
+            .then(response => response.json())
+            .then(data => {
+                const transcriptionsList = document.getElementById('transcriptions');
+                transcriptionsList.innerHTML = '';
+                if (data.transcription) {
+                    const li = document.createElement('li');
+                    li.textContent = JSON.stringify(data.transcription);
+                    transcriptionsList.appendChild(li);
+                } else {
+                    const li = document.createElement('li');
+                    li.textContent = data.error;
+                    transcriptionsList.appendChild(li);
+                }
+            });
+        }
+
+        function translateAmharicToEnglish() {
+            const text = document.getElementById('amharic-text').value;
+            fetch('/translate_amharic_to_english', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ text: text }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                const translationsList = document.getElementById('amharic-to-english');
+                translationsList.innerHTML = '';
+                if (data.translation) {
+                    const li = document.createElement('li');
+                    li.textContent = JSON.stringify(data.translation);
+                    translationsList.appendChild(li);
+                } else {
+                    const li = document.createElement('li');
+                    li.textContent = data.error;
+                    translationsList.appendChild(li);
+                }
+            });
+        }
+
+        function translateEnglishToAmharic() {
+            const text = document.getElementById('english-text').value;
+            fetch('/translate_english_to_amharic', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ text: text }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                const translationsList = document.getElementById('english-to-amharic');
+                translationsList.innerHTML = '';
+                if (data.translation) {
+                    const li = document.createElement('li');
+                    li.textContent = JSON.stringify(data.translation);
+                    translationsList.appendChild(li);
+                } else {
+                    const li = document.createElement('li');
+                    li.textContent = data.error;
+                    translationsList.appendChild(li);
+                }
+            });
+        }
+
+        function uploadAmharicFile() {
+            const fileInput = document.getElementById('amharic-file');
+            const file = fileInput.files[0];
+            if (!file) {
+                alert('Please select a text file to upload.');
+                return;
+            }
+            const formData = new FormData();
+            formData.append('file', file);
+
+            document.getElementById('amharic-progress').style.display = 'block';
+
+            fetch('/translate_amharic_file', {
+                method: 'POST',
+                body: formData,
+            })
+            .then(response => response.blob())
+            .then(blob => {
+                document.getElementById('amharic-progress').style.display = 'none';
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.style.display = 'none';
+                a.href = url;
+                a.download = 'translated_amharic_to_english.txt';
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+            })
+            .catch(() => {
+                document.getElementById('amharic-progress').style.display = 'none';
+                alert('Failed to translate file.');
+            });
+        }
+
+        function uploadEnglishFile() {
+            const fileInput = document.getElementById('english-file');
+            const file = fileInput.files[0];
+            if (!file) {
+                alert('Please select a text file to upload.');
+                return;
+            }
+            const formData = new FormData();
+            formData.append('file', file);
+
+            document.getElementById('english-progress').style.display = 'block';
+
+            fetch('/translate_english_file', {
+                method: 'POST',
+                body: formData,
+            })
+            .then(response => response.blob())
+            .then(blob => {
+                document.getElementById('english-progress').style.display = 'none';
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.style.display = 'none';
+                a.href = url;
+                a.download = 'translated_english_to_amharic.txt';
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+            })
+            .catch(() => {
+                document.getElementById('english-progress').style.display = 'none';
+                alert('Failed to translate file.');
+            });
+        }
+
+        function convertTextToSpeech() {
+            const text = document.getElementById('tts-text').value;
+            fetch('/text_to_speech', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ text: text }),
+            })
+            .then(response => response.blob())
+            .then(blob => {
+                const url = window.URL.createObjectURL(blob);
+                const audio = document.createElement('audio');
+                audio.controls = true;
+                audio.src = url;
+                const audioContainer = document.getElementById('tts-audio');
+                audioContainer.innerHTML = '';
+                audioContainer.appendChild(audio);
+            })
+            .catch(() => {
+                alert('Failed to convert text to speech.');
+            });
+        }
+    </script>
+</body>
+</html>
