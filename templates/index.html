@@ -1,170 +1,103 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ethiopian Model Hub </title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <title>Ethiopian Model Hub</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f8f9fa;
+            background-color: #000000;
         }
+
         .container {
             max-width: 1200px;
             margin: 40px auto;
             padding: 20px;
-            background: #fff;
+            background: #262b32;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
-        .intro-text {
-            text-align: center;
-            margin-bottom: 40px;
-        }
+
         .intro-text h1 {
-            color: #16408e;
+            color: #ffffff;
         }
-        .intro-text p {
-            color: #555;
-        }
-        .section {
-            padding: 20px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            background-color: #fafafa;
-            margin-bottom: 20px;
-        }
+
         .section h2 {
-            font-size: 1.5em;
             color: #007BFF;
         }
-        .section input[type="text"], .section input[type="file"] {
-            width: calc(100% - 22px);
-            padding: 10px;
-            margin-bottom: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        }
-        .section button {
-            width: 100%;
-            padding: 10px;
-            background-color: #007BFF;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 1em;
-        }
-        .section button:hover {
-            background-color: #0056b3;
-        }
-        ul {
-            list-style-type: none;
-            padding: 0;
-            margin: 0;
-        }
-        li {
-            background: #e0e0e0;
-            margin: 5px 0;
-            padding: 10px;
-            border-radius: 4px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .feedback {
-            cursor: pointer;
-            color: green;
-            font-size: 1.2em;
-        }
-        .model-link {
-            margin-top: 10px;
-            display: block;
-            color: #007BFF;
-            text-decoration: none;
-        }
-        .model-link:hover {
-            text-decoration: underline;
-        }
-        .spinner-border {
-            width: 2rem;
-            height: 2rem;
-        }
+
         footer {
-            text-align: center;
-            padding: 20px;
             background-color: #16408e;
-            color: white;
-            margin-top: 40px;
         }
     </style>
 </head>
+
 <body>
-    <div class="container">
-        <div class="intro-text">
-            <h1>Welcome to the Ethiopian AI Models Hub</h1>
-            <p>Discover fun tools for Amharic text generation, translation, and more. Explore the interactive sections below to dive into different open-source models!</p>
-            <p>Crafted with a sprinkle of creativity and a lot of love by <a href="https://henokb.github.io/" style="color: #16408e;">Henok</a>.</p>
+    <div class="container mx-auto p-8 bg-white shadow-lg rounded-lg">
+        <div class="intro-text text-center mb-8">
+            <h1 class="text-4xl font-bold text-blue-900">Welcome to the Ethiopian AI Models Hub</h1>
+            <p class="text-white">Discover fun tools for Amharic text generation, translation, and more. Explore the interactive sections below to dive into different open-source models!</p>
+            <p class="text-white">Crafted with a sprinkle of creativity and a lot of love by </p>
         </div>
 
-        <div class="section">
-            <h2>Creative Writing Suggestions/Masking</h2>
-            <input type="text" id="prompt" placeholder="Enter a sentence">
-            <button onclick="getSuggestions()">Get Suggestions</button>
-            <ul id="suggestions"></ul>
-            <p>By EthioNLP <a id="llm-link" class="model-link" href="#" target="_blank">Model Source 🤗</a></p>
-        </div>
-
-        <div class="section">
-            <h2>Upload Audio for Transcription</h2>
-            <input type="file" id="audio-file">
-            <button onclick="uploadAudio()">Upload and Transcribe</button>
-            <ul id="transcriptions"></ul>
-            <p>By agkphysics <a id="asr-link" class="model-link" href="#" target="_blank">Model Source 🤗</a></p>
-        </div>
-
-        <div class="section">
-            <h2>Translate Amharic to English</h2>
-            <input type="text" id="amharic-text" placeholder="Enter Amharic text">
-            <button onclick="translateAmharicToEnglish()">Translate</button>
-            <ul id="amharic-to-english"></ul>
-            <input type="file" id="amharic-file" accept=".txt">
-            <button onclick="uploadAmharicFile()">Translate File</button>
-            <div id="amharic-progress" style="display: none;" class="text-center">
-                <div class="spinner-border" role="status">
-                    <span class="sr-only">Translating...</span>
-                </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div class="section p-4 bg-gray-100 rounded-lg shadow-md">
+                <h2 class="text-xl font-semibold">Mask</h2>
+                <input type="text" id="prompt" placeholder="Enter a sentence" class="w-full p-2 border rounded mb-2">
+                <button onclick="getSuggestions()" class="w-full p-2 bg-blue-500 text-white rounded">Get Suggestions</button>
+                <ul id="suggestions" class="list-none p-0 mt-2"></ul>
+                <p class="mt-2">By EthioNLP <a id="llm-link" class="model-link text-blue-500" href="#" target="_blank">Model Source 🤗</a></p>
             </div>
-            <p>By Atnafu <a id="amharic-english-link" class="model-link" href="#" target="_blank">Model Source 🤗</a></p>
-        </div>
 
-        <div class="section">
-            <h2>Translate English to Amharic</h2>
-            <input type="text" id="english-text" placeholder="Enter English text">
-            <button onclick="translateEnglishToAmharic()">Translate</button>
-            <ul id="english-to-amharic"></ul>
-            <input type="file" id="english-file" accept=".txt">
-            <button onclick="uploadEnglishFile()">Translate File</button>
-            <div id="english-progress" style="display: none;" class="text-center">
-                <div class="spinner-border" role="status">
-                    <span class="sr-only">Translating...</span>
-                </div>
+            <div class="section p-4 bg-gray-100 rounded-lg shadow-md">
+                <h2 class="text-xl font-semibold">Upload Audio for Transcription</h2>
+                <input type="file" id="audio-file" class="w-full p-2 border rounded mb-2">
+                <button onclick="uploadAudio()" class="w-full p-2 bg-blue-500 text-white rounded">Upload and Transcribe</button>
+                <ul id="transcriptions" class="list-none p-0 mt-2"></ul>
+                <p class="mt-2">By agkphysics <a id="asr-link" class="model-link text-blue-500" href="#" target="_blank">Model Source 🤗</a></p>
             </div>
-            <p>By Atnafu <a id="english-amharic-link" class="model-link" href="#" target="_blank">Model Source 🤗</a></p>
-        </div>
 
-        <div class="section">
-            <h2>Text to Speech</h2>
-            <input type="text" id="tts-text" placeholder="Enter text for TTS">
-            <button onclick="convertTextToSpeech()">Convert to Speech</button>
-            <div id="tts-audio"></div>
-            <p>By Walelign <a id="tts-link" class="model-link" href="#" target="_blank">Model Source 🤗</a></p>
+            <div class="section p-4 bg-gray-100 rounded-lg shadow-md">
+                <h2 class="text-xl font-semibold">Translate Amharic to English</h2>
+                <input type="text" id="amharic-text" placeholder="Enter Amharic text" class="w-full p-2 border rounded mb-2">
+                <button onclick="translateAmharicToEnglish()" class="w-full p-2 bg-blue-500 text-white rounded">Translate</button>
+                <ul id="amharic-to-english" class="list-none p-0 mt-2"></ul>
+                <input type="file" id="amharic-file" accept=".txt" class="w-full p-2 border rounded mt-2">
+                <button onclick="uploadAmharicFile()" class="w-full p-2 bg-blue-500 text-white rounded mt-2">Translate File</button>
+                <div id="amharic-progress" style="display: none;" class="text-center mt-2">
+                    <div class="spinner-border w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+                </div>
+                <p class="mt-2">By Atnafu <a id="amharic-english-link" class="model-link text-blue-500" href="#" target="_blank">Model Source 🤗</a></p>
+            </div>
+
+            <div class="section p-4 bg-gray-100 rounded-lg shadow-md">
+                <h2 class="text-xl font-semibold">Translate English to Amharic</h2>
+                <input type="text" id="english-text" placeholder="Enter English text" class="w-full p-2 border rounded mb-2">
+                <button onclick="translateEnglishToAmharic()" class="w-full p-2 bg-blue-500 text-white rounded">Translate</button>
+                <ul id="english-to-amharic" class="list-none p-0 mt-2"></ul>
+                <input type="file" id="english-file" accept=".txt" class="w-full p-2 border rounded mt-2">
+                <button onclick="uploadEnglishFile()" class="w-full p-2 bg-blue-500 text-white rounded mt-2">Translate File</button>
+                <div id="english-progress" style="display: none;" class="text-center mt-2">
+                    <div class="spinner-border w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+                </div>
+                <p class="mt-2">By Atnafu <a id="english-amharic-link" class="model-link text-blue-500" href="#" target="_blank">Model Source 🤗</a></p>
+            </div>
+
+            <div class="section p-4 bg-gray-100 rounded-lg shadow-md">
+                <h2 class="text-xl font-semibold">Text to Speech</h2>
+                <input type="text" id="tts-text" placeholder="Enter text for TTS" class="w-full p-2 border rounded mb-2">
+                <button onclick="convertTextToSpeech()" class="w-full p-2 bg-blue-500 text-white rounded">Convert to Speech</button>
+                <div id="tts-audio" class="mt-2"></div>
+                <p class="mt-2">By Walelign <a id="tts-link" class="model-link text-blue-500" href="#" target="_blank">Model Source 🤗</a></p>
+            </div>
         </div>
     </div>
 
-    <footer>
-        © 2024 Henok's AI Hub. All rights reserved.
+    <footer class="text-center p-4 bg-blue-900 text-white mt-8">
+        © 2024 Model Hub. By <a href="https://henokb.github.io/" class="text-white">Henok</a>
     </footer>
 
     <script>
@@ -221,10 +154,10 @@
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ prompt: prompt }),
-            })
-            .then(response => response.json())
-            .then(data => {
+                body: JSON.stringify({
+                    prompt: prompt
+                }),
+            }).then(response => response.json()).then(data => {
                 const suggestionsList = document.getElementById('suggestions');
                 suggestionsList.innerHTML = '';
                 if (data.suggestions) {
@@ -252,10 +185,11 @@
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ index: index, type: type }),
-            })
-            .then(response => response.json())
-            .then(data => {
+                body: JSON.stringify({
+                    index: index,
+                    type: type
+                }),
+            }).then(response => response.json()).then(data => {
                 alert(data.message);
             });
         }
@@ -273,9 +207,7 @@
             fetch('/upload_audio', {
                 method: 'POST',
                 body: formData,
-            })
-            .then(response => response.json())
-            .then(data => {
+            }).then(response => response.json()).then(data => {
                 const transcriptionsList = document.getElementById('transcriptions');
                 transcriptionsList.innerHTML = '';
                 if (data.transcription) {
@@ -297,10 +229,10 @@
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ text: text }),
-            })
-            .then(response => response.json())
-            .then(data => {
+                body: JSON.stringify({
+                    text: text
+                }),
+            }).then(response => response.json()).then(data => {
                 const translationsList = document.getElementById('amharic-to-english');
                 translationsList.innerHTML = '';
                 if (data.translation) {
@@ -322,10 +254,10 @@
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ text: text }),
-            })
-            .then(response => response.json())
-            .then(data => {
+                body: JSON.stringify({
+                    text: text
+                }),
+            }).then(response => response.json()).then(data => {
                 const translationsList = document.getElementById('english-to-amharic');
                 translationsList.innerHTML = '';
                 if (data.translation) {
@@ -355,9 +287,7 @@
             fetch('/translate_amharic_file', {
                 method: 'POST',
                 body: formData,
-            })
-            .then(response => response.blob())
-            .then(blob => {
+            }).then(response => response.blob()).then(blob => {
                 document.getElementById('amharic-progress').style.display = 'none';
                 const url = window.URL.createObjectURL(blob);
                 const a = document.createElement('a');
@@ -367,8 +297,7 @@
                 document.body.appendChild(a);
                 a.click();
                 window.URL.revokeObjectURL(url);
-            })
-            .catch(() => {
+            }).catch(() => {
                 document.getElementById('amharic-progress').style.display = 'none';
                 alert('Failed to translate file.');
             });
@@ -389,9 +318,7 @@
             fetch('/translate_english_file', {
                 method: 'POST',
                 body: formData,
-            })
-            .then(response => response.blob())
-            .then(blob => {
+            }).then(response => response.blob()).then(blob => {
                 document.getElementById('english-progress').style.display = 'none';
                 const url = window.URL.createObjectURL(blob);
                 const a = document.createElement('a');
@@ -401,8 +328,7 @@
                 document.body.appendChild(a);
                 a.click();
                 window.URL.revokeObjectURL(url);
-            })
-            .catch(() => {
+            }).catch(() => {
                 document.getElementById('english-progress').style.display = 'none';
                 alert('Failed to translate file.');
             });
@@ -415,10 +341,10 @@
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ text: text }),
-            })
-            .then(response => response.blob())
-            .then(blob => {
+                body: JSON.stringify({
+                    text: text
+                }),
+            }).then(response => response.blob()).then(blob => {
                 const url = window.URL.createObjectURL(blob);
                 const audio = document.createElement('audio');
                 audio.controls = true;
@@ -426,11 +352,11 @@
                 const audioContainer = document.getElementById('tts-audio');
                 audioContainer.innerHTML = '';
                 audioContainer.appendChild(audio);
-            })
-            .catch(() => {
+            }).catch(() => {
                 alert('Failed to convert text to speech.');
             });
         }
     </script>
 </body>
+
 </html>
