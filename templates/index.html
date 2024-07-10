@@ -39,8 +39,8 @@
     <div class="container mx-auto p-8 bg-white shadow-lg rounded-lg">
         <div class="intro-text text-center mb-8">
             <h1 class="text-4xl font-bold text-blue-900">Welcome to the Ethiopian AI Models Hub</h1>
-            <p class="text-white">Discover fun tools for Amharic text generation, translation, and more. Explore the interactive sections below to dive into different open-source models!</p>
-            <p class="text-white">Crafted with a sprinkle of creativity and a lot of love by </p>
+            <p class="text-white">Discover different models for Ethiopian languages.</p>
+            <p class="text-white">⚠️Some of them might not work so reload them or just check the models directly.</p>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -92,6 +92,47 @@
                 <button onclick="convertTextToSpeech()" class="w-full p-2 bg-blue-500 text-white rounded">Convert to Speech</button>
                 <div id="tts-audio" class="mt-2"></div>
                 <p class="mt-2">By Walelign <a id="tts-link" class="model-link text-blue-500" href="#" target="_blank">Model Source 🤗</a></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="container mx-auto p-8 bg-white shadow-lg rounded-lg">
+        <div class="intro-text text-center mb-8">
+            <h1 class="text-4xl font-bold text-blue-900">Datasets</h1>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div class="section p-4 bg-gray-100 rounded-lg shadow-md">
+                <h2 class="text-xl font-semibold">Machine Translation</h2>
+                <p>Machine translation (MT) benchmark dataset for languages in the Horn of Africa.</p>
+                <p>Languages supported: Afar, Amharic, English, Oromo, Somali, Tigrinya</p>
+                <p>By <a id="llm-link" class="model-link text-blue-500" href="https://github.com/asmelashteka/HornMT" target="_blank">Asmelash</a></p>
+            </div>
+
+            <div class="section p-4 bg-gray-100 rounded-lg shadow-md">
+                <h2 class="text-xl font-semibold">Upload Audio for Transcription</h2>
+                <p>Upload audio files to transcribe them into text using the latest speech recognition models.</p>
+                <p>Languages supported: Amharic, English</p>
+                <p>By <a id="asr-link" class="model-link text-blue-500" href="https://huggingface.co/agkphysics/wav2vec2-large-xlsr-53-amharic" target="_blank">agkphysics</a></p>
+            </div>
+
+            <div class="section p-4 bg-gray-100 rounded-lg shadow-md">
+                <h2 class="text-xl font-semibold">Translate Amharic to English</h2>
+                <p>Translate Amharic text into English using state-of-the-art machine translation models.</p>
+                <p>By <a id="amharic-english-link" class="model-link text-blue-500" href="https://huggingface.co/Atnafu/Amharic-English-MT" target="_blank">Atnafu</a></p>
+            </div>
+
+            <div class="section p-4 bg-gray-100 rounded-lg shadow-md">
+                <h2 class="text-xl font-semibold">Translate English to Amharic</h2>
+                <p>Translate English text into Amharic using state-of-the-art machine translation models.</p>
+                <p>By <a id="english-amharic-link" class="model-link text-blue-500" href="https://huggingface.co/Atnafu/English-Amharic-MT" target="_blank">Atnafu</a></p>
+            </div>
+
+            <div class="section p-4 bg-gray-100 rounded-lg shadow-md">
+                <h2 class="text-xl font-semibold">Text to Speech</h2>
+                <p>Convert text into speech using advanced text-to-speech models.</p>
+                <p>Languages supported: Amharic</p>
+                <p>By <a id="tts-link" class="model-link text-blue-500" href="https://huggingface.co/Walelign/speecht5_tts_Amharic" target="_blank">Walelign</a></p>
             </div>
         </div>
     </div>
